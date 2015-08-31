@@ -124,6 +124,9 @@ ralink_default_fw_size_16M=16121856
 BuildFirmware/Default16M/squashfs=$(call BuildFirmware/OF,$(1),$(2),$(3),$(ralink_default_fw_size_16M),$(4))
 BuildFirmware/Default16M/initramfs=$(call BuildFirmware/OF/initramfs,$(1),$(2),$(3),$(4))
 
+ralink_default_fw_size_32M=32243712
+BuildFirmware/Default32M/squashfs=$(call BuildFirmware/OF,$(1),$(2),$(3),$(ralink_default_fw_size_32M),$(4))
+BuildFirmware/Default32M/initramfs=$(call BuildFirmware/OF/initramfs,$(1),$(2),$(3),$(4))
 # Build images for a custom sized flash layout
 # $(1) = squashfs/initramfs
 # $(2) = lowercase board name
@@ -710,6 +713,8 @@ endif
 #
 
 Image/Build/Profile/MT7620a=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a,MT7620a)
+Image/Build/Profile/MT7620a_16M=$(call BuildFirmware/Default16M/$(1),$(1),mt7620a_16M,MT7620a_16M)
+Image/Build/Profile/MT7620a_32M=$(call BuildFirmware/Default32M/$(1),$(1),mt7620a_32M,MT7620a_32M)
 Image/Build/Profile/MT7620a_MT7610e=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7610e,MT7620a_MT7610e)
 Image/Build/Profile/MT7620a_MT7530=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_mt7530,MT7620a_MT7530)
 Image/Build/Profile/MT7620a_V22SG=$(call BuildFirmware/Default8M/$(1),$(1),mt7620a_v22sg,MT7620a_V22SG)
@@ -730,20 +735,23 @@ Image/Build/Profile/Y1S=$(call BuildFirmware/Default16M/$(1),$(1),Lenovo-y1s,Y1S
 ifeq ($(SUBTARGET),mt7620a)
 define Image/Build/Profile/Default
 	$(call Image/Build/Profile/MT7620a,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
-	$(call Image/Build/Profile/MT7620a_MT7530,$(1))
-	$(call Image/Build/Profile/MT7620a_V22SG,$(1))
-	$(call Image/Build/Profile/RP-N53,$(1))
-	$(call Image/Build/Profile/DIR-810L,$(1))
-	$(call Image/Build/Profile/WHR300HP2,$(1))
-	$(call Image/Build/Profile/WHR600D,$(1))
-	$(call Image/Build/Profile/WHR1166D,$(1))
-	$(call Image/Build/Profile/MZK-750DHP,$(1))
-	$(call Image/Build/Profile/NA930,$(1))
-	$(call Image/Build/Profile/Y1,$(1))
-	$(call Image/Build/Profile/Y1S,$(1))
+	$(call Image/Build/Profile/MT7620a_16M,$(1))
+	$(call Image/Build/Profile/MT7620a_32M,$(1))
 endef
 endif
+
+#	$(call Image/Build/Profile/MT7620a_MT7610e,$(1))
+#	$(call Image/Build/Profile/MT7620a_MT7530,$(1))
+#	$(call Image/Build/Profile/MT7620a_V22SG,$(1))
+#	$(call Image/Build/Profile/RP-N53,$(1))
+#	$(call Image/Build/Profile/DIR-810L,$(1))
+#	$(call Image/Build/Profile/WHR300HP2,$(1))
+#	$(call Image/Build/Profile/WHR600D,$(1))
+#	$(call Image/Build/Profile/WHR1166D,$(1))
+#	$(call Image/Build/Profile/MZK-750DHP,$(1))
+#	$(call Image/Build/Profile/NA930,$(1))
+#	$(call Image/Build/Profile/Y1,$(1))
+#	$(call Image/Build/Profile/Y1S,$(1))
 
 
 #

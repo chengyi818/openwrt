@@ -330,6 +330,12 @@
 				ralink,function = "wled";
 			};
 		};
+		spi_refclk_pins: spi_refclk {
+			spi_refclk {
+				ralink,group = "spi refclk";
+				ralink,function = "spi refclk";
+			};
+		};
 		rgmii1_pins: rgmii1 {
 			rgmii1 {
 				ralink,group = "rgmii1";
@@ -416,7 +422,6 @@
 		interrupt-parent = <&intc>;
 		interrupts = <18>;
 
-		status = "disabled";
 	};
 
 	ohci@101c1000 {
@@ -426,7 +431,6 @@
 		interrupt-parent = <&intc>;
 		interrupts = <18>;
 
-		status = "disabled";
 	};
 
 	pcie@10140000 {
@@ -441,15 +445,5 @@
 		interrupts = <4>;
 
 		status = "disabled";
-	};
-
-	wmac@10180000 {
-		compatible = "ralink,rt7620-wmac", "ralink,rt2880-wmac";
-		reg = <0x10180000 40000>;
-
-		interrupt-parent = <&cpuintc>;
-		interrupts = <6>;
-
-		ralink,eeprom = "soc_wmac.eeprom";
 	};
 };

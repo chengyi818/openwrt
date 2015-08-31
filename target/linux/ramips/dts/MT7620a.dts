@@ -4,9 +4,27 @@
 
 / {
 	compatible = "ralink,mt7620a-eval-board", "ralink,mt7620a-soc";
-	model = "Ralink MT7620a + MT7610e evaluation board";
+	model = "Ralink MT7620A evaluation board";
 
 	palmbus@10000000 {
+		sysc@0 {
+			ralink,gpiomux = "i2c", "jtag";
+			ralink,uartmux = "gpio";
+			ralink,wdtmux = <1>;
+		};
+
+		gpio0: gpio@600 {
+			status = "okay";
+		};
+
+		gpio1: gpio@638 {
+			status = "okay";
+		};
+
+		gpio3: gpio@688 {
+			status = "okay";
+		};
+
 		spi@b00 {
 			status = "okay";
 
@@ -16,7 +34,7 @@
 				compatible = "en25q64";
 				reg = <0 0>;
 				linux,modalias = "m25p80", "en25q64";
-				spi-max-frequency = <10000000>;
+				spi-max-frequency = <1000000>;
 
 				partition@0 {
 					label = "u-boot";
@@ -27,18 +45,21 @@
 				partition@30000 {
 					label = "u-boot-env";
 					reg = <0x30000 0x10000>;
-					read-only;
 				};
 
 				factory: partition@40000 {
 					label = "factory";
 					reg = <0x40000 0x10000>;
-					read-only;
 				};
 
 				partition@50000 {
 					label = "firmware";
-					reg = <0x50000 0x7b0000>;
+					reg = <0x50000 0x7a0000>;
+				};
+
+				partition@7f0000 {
+					label = "Config";
+					reg = <0x7f0000 0x10000>;
 				};
 			};
 		};
@@ -46,8 +67,8 @@
 
 	pinctrl {
 		state_default: pinctrl0 {
-			gpio {
-				ralink,group = "i2c", "uartf";
+			default {
+				ralink,group = "i2c", "uartf", "wled", "spi refclk";
 				ralink,function = "gpio";
 			};
 		};
@@ -57,39 +78,13 @@
 		status = "okay";
 
 		pinctrl-names = "default";
-		pinctrl-0 = <&rgmii1_pins &rgmii2_pins &mdio_pins>;
+		pinctrl-0 = <&ephy_pins>;
 
 		ralink,port-map = "llllw";
-
-		port@4 {
-			status = "okay";
-			phy-mode = "rgmii";
-			phy-handle = <&phy4>;
-		};
-
-		port@5 {
-			status = "okay";
-			phy-mode = "rgmii";
-			phy-handle = <&phy5>;
-		};
-
-		mdio-bus {
-			status = "okay";
-
-			phy4: ethernet-phy@4 {
-				reg = <4>;
-				phy-mode = "rgmii";
-			};
-
-			phy5: ethernet-phy@5 {
-				reg = <5>;
-				phy-mode = "rgmii";
-			};
-		};
 	};
 
 	gsw@10110000 {
-		ralink,port4 = "gmac";
+		ralink,port4 = "ephy";
 	};
 
 	sdhci@10130000 {
@@ -100,18 +95,32 @@
 		status = "okay";
 	};
 
+    gpio-leds {
+		compatible = "gpio-leds";
+
+		wps {
+			label = "ralink:blue:wps";
+			gpios = <&gpio1 15 1>;
+		};
+
+		wlan {
+			label = "ralink:blue:wlan";
+			gpios = <&gpio3 0 1>;
+		};
+    };
+
 	gpio-keys-polled {
 		compatible = "gpio-keys";
 		#address-cells = <1>;
 		#size-cells = <0>;
 		poll-interval = <20>;
-		s2 {
-			label = "S2";
+		wps {
+			label = "wps";
 			gpios = <&gpio0 1 1>;
 			linux,code = <0x100>;
 		};
-		s3 {
-			label = "S3";
+		reset {
+			label = "reset";
 			gpios = <&gpio0 2 1>;
 			linux,code = <0x101>;
 		};
