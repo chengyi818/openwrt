@@ -29,4 +29,4 @@ define Package/ubustest/install
     $(INSTALL_BIN) $(PKG_BUILD_DIR)/client $(1)/bin/
 endef
 
-$(eval $(call BuildPackage,ubustest))
+$(eval $(call BuildPackage,$(PKG_NAME)))
