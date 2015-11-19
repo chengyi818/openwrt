@@ -1,0 +1,34 @@
+#!/bin/sh /etc/rc.common
+START=50
+
+run_dosattack()
+{
+    local enable
+    config_get_bool enable $1 enable
+    echo enableis:$enable > /dev/console
+    if [ $enable ]
+    then
+        insmod dosattack
+    else
+        rmmod dosattack
+    fi
+}
+
+stop()
+{
+    echo **********************stop************* > /dev/console
+    sed 's/1//' -i /etc/config/attack
+}
+
+start()
+{
+    echo ********************start*************** > /dev/console
+    config_load attack
+    config_foreach run_dosattack arguments
+}
+
+boot()
+{
+    stop
+    start
+}
