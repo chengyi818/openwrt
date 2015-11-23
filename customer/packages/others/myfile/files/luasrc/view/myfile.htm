@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<%-
+    local uci  = require "luci.model.uci".cursor()
+    local lanip = uci:get("network", "lan", "ipaddr")
+
+-%>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="/luci-static/win8/cascade.css">
+        <title>MyFile</title>
+    </head>
+    <body>
+        <h2><a id="content" name="content">MyFile</a></h2>
+
+        <fieldset class="cbi-section-node">
+            This is a web based file server. <br>
+            You can access it from the following address:<br><br>
+            <a href="http://<%=lanip%>:88/myfile/" target="_blank">http://<%=lanip%>:88/myfile/</a>
+        </fieldset>
+    </body>
+</html>
