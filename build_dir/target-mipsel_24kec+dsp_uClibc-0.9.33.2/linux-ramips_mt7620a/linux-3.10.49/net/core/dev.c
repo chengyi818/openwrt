@@ -168,6 +168,9 @@ EXPORT_SYMBOL(dev_base_lock);
 
 seqcount_t devnet_rename_seq;
 
+int (*cathpkt_hook)(struct sk_buff *skb);
+EXPORT_SYMBOL(cathpkt_hook);
+
 static inline void dev_base_seq_inc(struct net *net)
 {
 	while (++net->dev_base_seq == 0);
@@ -3450,6 +3453,18 @@ static int __netif_receive_skb_core(struct sk_buff *skb, bool pfmemalloc)
 
 	trace_netif_receive_skb(skb);
 
+    if(cathpkt_hook)
+    {
+        if(skb->dev->name && strncmp(skb->dev->name, "ra", 2) == 0)
+        {
+            if(cathpkt_hook(skb) == -1)
+            {
+                printk(KERN_ERR "cathpkt drop the packet.\n");
+                kfree_skb(skb);
+                goto out;
+            }
+        }
+    }
 	/* if we've gotten here through NAPI, check netpoll */
 	if (netpoll_receive_skb(skb))
 		goto out;
