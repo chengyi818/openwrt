@@ -1,0 +1,32 @@
+#!/bin/sh /etc/rc.common
+START=50
+ 
+config_antiportscan()
+{
+    local enable
+    config_get_bool enable $1 enable
+
+#    iptables -D FORWARD -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+#    iptables -D INPUT -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+
+    rmmod kantiportscan.ko
+    if [ $enable ]; then
+        insmod kantiportscan.ko
+#        iptables -I FORWARD 1 -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+#        iptables -I INPUT 1 -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -j ACCEPT
+    fi
+}
+
+start()
+{
+    config_load antiportscan
+    config_foreach config_antiportscan antiportscan
+}
+
+stop()
+{
+    rmmod kantiportscan.ko
+#    killall antiportscan
+
+    echo "antiportscan has stoped."
+}
