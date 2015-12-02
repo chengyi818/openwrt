@@ -103,7 +103,7 @@ define Kernel/CommonFiles/Override
 endef
 
 define Kernel/ProfileFiles/Override
-	-$(CP) $(CUSTOMER_PROFILE_DIR)/$(PROJECT)/kernel/* $(LINUX_DIR)/
+	-$(CP) $(CUSTOMER_PROJECT_DIR)/$(PROJECT)/kernel/* $(LINUX_DIR)/
 endef
 # Add by hangxu End
 
