@@ -1,0 +1,8 @@
+config CollectUsrData
+    option Enable	'0'
+    option Key
+    option FtpUrl
+    option FtpUser
+    option FtpPassword
+    option PeriodTime
+

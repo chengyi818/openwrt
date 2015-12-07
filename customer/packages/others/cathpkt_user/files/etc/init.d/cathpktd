@@ -1,0 +1,29 @@
+#!/bin/sh /etc/rc.common
+START=90
+
+run_cathpkt()
+{
+    local enable
+    config_get_bool enable $1 Enable
+
+    if [ "$enable" -eq "1" ]; then
+        cathpkt -e 1 &
+        echo "cathpkt enabled." >/dev/console
+    else
+        cathpkt -e 0 &
+        echo "cathpkt disabled." >/dev/console
+    fi
+}
+
+start()
+{
+    insmod /lib/modules/3.10.14/cathpkt.ko
+    config_load cathpkt
+    config_foreach run_cathpkt CollectUsrData
+}
+
+stop()
+{
+    value=`pidof cathpkt`
+    kill -9 $value
+}
